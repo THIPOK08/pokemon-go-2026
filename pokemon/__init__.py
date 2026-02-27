@@ -8,7 +8,7 @@ from pokemon.pokemon.routes import pokemon_bp
 
 def create_app():
   app = Flask(__name__)
-  app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+  app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///pokemon.db'
   app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
   db.init_app(app)
