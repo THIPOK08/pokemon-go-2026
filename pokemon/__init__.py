@@ -17,6 +17,8 @@ def create_app():
   login_manager.login_view = 'users.login'
   login_manager.login_message = 'Please login before access this page!'
   login_manager.login_message_category = 'warning'
+  with app.app_context():
+        db.create_all()
 
   app.register_blueprint(core_bp, url_prefix='/')
   app.register_blueprint(users_bp, url_prefix='/users')
