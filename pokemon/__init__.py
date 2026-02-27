@@ -10,6 +10,9 @@ def create_app():
   app = Flask(__name__)
   app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///pokemon.db'
   app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+  with app.app_context():
+      from pokemon import models
+      db.create_all()
 
   db.init_app(app)
   bcrypt.init_app(app)
@@ -17,10 +20,6 @@ def create_app():
   login_manager.login_view = 'users.login'
   login_manager.login_message = 'Please login before access this page!'
   login_manager.login_message_category = 'warning'
-  with app.app_context():
-        from pokemon import models 
-        db.create_all()
-        print("Database tables created successfully!")
 
   app.register_blueprint(core_bp, url_prefix='/')
   app.register_blueprint(users_bp, url_prefix='/users')
