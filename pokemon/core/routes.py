@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, sqlalchemy as sa
 from pokemon.extensions import db
 from pokemon.models import Pokemon, Type
 
