@@ -11,9 +11,10 @@ def create_app():
   app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///pokemon.db'
   app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
   with app.app_context():
-      from pokemon import models
-      db.create_all()
-
+     from pokemon.models import User, Pokemon, Type 
+  db.create_all()
+  print("Database Created!")
+     
   db.init_app(app)
   bcrypt.init_app(app)
   login_manager.init_app(app)
