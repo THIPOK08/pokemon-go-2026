@@ -22,11 +22,5 @@ def detail(id):
 @core_bp.route('/change-password', methods=['GET', 'POST'])
 def change_password():
     if request.method == 'POST':
-        old_password = request.form.get('old_password')
-        new_password = request.form.get('new_password')
-        confirm_password = request.form.get('confirm_password')
-        if new_password != confirm_password:
-            return redirect(url_for('core.change_password'))
         return redirect(url_for('core.index'))
-
-    return render_template('core/change_password.html', title='Change Password')
+    return render_template('core/change_password.html')
