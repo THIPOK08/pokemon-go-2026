@@ -19,6 +19,7 @@ def create_app():
   login_manager.login_message_category = 'warning'
   with app.app_context():
         db.create_all()
+        print("Database tables created successfully!")
 
   app.register_blueprint(core_bp, url_prefix='/')
   app.register_blueprint(users_bp, url_prefix='/users')
