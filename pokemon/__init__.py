@@ -18,7 +18,7 @@ def create_app():
   login_manager.login_message = 'Please login before access this page!'
   login_manager.login_message_category = 'warning'
   with app.app_context():
-        from pokemon import models
+        from pokemon import models 
         db.create_all()
         print("Database tables created successfully!")
 
