@@ -21,7 +21,23 @@ def detail(id):
                          pokemon=pokemon)
 
 @core_bp.route('/change-password', methods=['GET', 'POST'])
+@login_required 
 def change_password():
     if request.method == 'POST':
+        old_pw = request.form.get('old_password')
+        new_pw = request.form.get('new_password')
+        confirm_pw = request.form.get('confirm_password')
+        if not bcrypt.check_password_hash(current_user.password, old_pw):
+            return redirect(url_for('core.change_password'))
+
+        if new_pw != confirm_pw:
+            return redirect(url_for('core.change_password'))
+
+        hashed_pw = bcrypt.generate_password_hash(new_pw).decode('utf-8')
+        current_user.password = hashed_pw
+        
+        db.session.commit() 
+
         return redirect(url_for('core.index'))
+    
     return render_template('core/change_password.html')
