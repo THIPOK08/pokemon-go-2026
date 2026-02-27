@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import current_user, login_required 
+from pokemon.extensions import db, bcrypt 
 import sqlalchemy as sa
-from pokemon.extensions import db
-from pokemon.models import Pokemon, Type
 
 core_bp = Blueprint('core', __name__, template_folder='templates')
 
@@ -27,17 +27,20 @@ def change_password():
         old_pw = request.form.get('old_password')
         new_pw = request.form.get('new_password')
         confirm_pw = request.form.get('confirm_password')
+
         if not bcrypt.check_password_hash(current_user.password, old_pw):
+            flash('รหัสผ่านเดิมไม่ถูกต้อง', 'danger')
             return redirect(url_for('core.change_password'))
 
         if new_pw != confirm_pw:
+            flash('รหัสใหม่และยืนยันรหัสไม่ตรงกัน', 'danger')
             return redirect(url_for('core.change_password'))
 
         hashed_pw = bcrypt.generate_password_hash(new_pw).decode('utf-8')
         current_user.password = hashed_pw
-        
         db.session.commit() 
 
+        flash('เปลี่ยนรหัสผ่านสำเร็จแล้ว!', 'success')
         return redirect(url_for('core.index'))
     
     return render_template('core/change_password.html')
